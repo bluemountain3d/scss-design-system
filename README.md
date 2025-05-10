@@ -10,47 +10,47 @@ scss/
 ├── abstracts/                   # Tools and helpers
 │   ├── functions/               # SCSS functions
 │   │   ├── _fn-[name].scss
-│   │   └── _index.scss
+│   │   └── __index__.scss
 │   ├── mixins/                  # SCSS mixins
 │   │   ├── _mx-[name].scss
-│   │   └── _index.scss
+│   │   └── __index__.scss
 │   └── variables/               # SCSS variables
 │       ├── _var-[name].scss
-│       └── _index.scss
+│       └── __index__.scss
 ├── vendors/                     # Third party styles
 │   ├── _modern-reset.scss
-│   └── _index.scss
+│   └── __index__.scss
 ├── utilities/                   # Utility classes
 │   ├── _reset.scss
 │   ├── _math-viewport.scss      # Math constants and viewport units
 │   ├── _a11y-helpers.scss       # Accessibility helpers
 │   ├── _spacing.scss            # Spacing properties and utilities
 │   ├── _grid.scss               # Grid system
-│   └── _index.scss
+│   └── __index__.scss
 ├── themes/                      # Theme-specific styles
 │   ├── _font-faces.scss         # Custom font declarations
 │   ├── _colors.scss             # Color custom properties
 │   ├── _typography.scss         # Typography custom properties
-│   └── _index.scss
+│   └── __index__.scss
 ├── base/                        # Base element styles
 │   ├── _html.scss
 │   ├── _body.scss
 │   ├── _main.scss
 │   ├── _form.scss
-│   └── _index.scss
+│   └── __index__.scss
 ├── components/                  # UI components
 │   ├── _button.scss
 │   ├── _carousel.scss
-│   └── _index.scss
+│   └── __index__.scss
 ├── layout/                      # Layout components
 │   ├── _container.scss
 │   ├── _header.scss
 │   ├── _footer.scss
-│   └── _index.scss
+│   └── __index__.scss
 ├── pages/                       # Page-specific styles
 │   ├── _home.scss
 │   ├── _about.scss
-│   └── _index.scss
+│   └── __index__.scss
 └── style.scss                   # Main file
 ```
 
@@ -60,17 +60,14 @@ The TEMPLATE directory contains starter templates for creating new SCSS modules 
 
 Example of `__MODULE-TEMPLATE__.scss`:
 ```scss
-//*** [FOLDER]: <MODULE NAME> ***//
-//* Description of the module's purpose
+/// [FOLDER]: <MODULE NAME>
+/// =======================
 
-@use '../abstracts/variables' as var;
-@use '../abstracts/functions' as fn;
-@use '../abstracts/mixins' as mx;
+/// @description of the module's purpose
 
-// Module Name
-$_module-name: 'Module';
-
-/* ### #{$_module-name} START */
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
 
 // Local Module variables
 $_module-specific-variable: value;
@@ -79,9 +76,6 @@ $_module-specific-variable: value;
 .module-name {
   // Properties
 }
-
-/* ### #{$_module-name} END
-/* ------------------------------------------------------------ */
 ```
 
 ### Abstracts
