@@ -1,0 +1,17 @@
+//*** Base: Form ***//
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+$_module-name: "Form";
+
+/* ### #{$_module-name} START */
+
+form {
+  // ...
+}
+
+
+/* ### #{$_module-name} END
+/* ------------------------------------------------------------ */

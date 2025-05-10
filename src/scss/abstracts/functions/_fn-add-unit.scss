@@ -1,0 +1,12 @@
+//*** Abstracts Function: Add unit ***//
+
+@use '../variables/__index__' as var;
+
+@use 'sass:math';
+
+@function addUnit($value, $unit) {
+  @if math.is-unitless($value) {
+    $value: #{$value}#{$unit};
+  }
+  @return $value;
+}

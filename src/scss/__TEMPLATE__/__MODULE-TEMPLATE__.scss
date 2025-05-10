@@ -1,0 +1,23 @@
+//*** [FOLDER]: <MODULE NAME> ***//
+/** 
+ * Description of the module's purpose
+ */
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+
+// Module local variables
+// $_module-local-variable: value;
+
+// Module styles
+// selector {}

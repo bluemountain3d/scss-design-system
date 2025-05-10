@@ -1,0 +1,17 @@
+//*** Base: Main ***//
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+$_module-name: "Main";
+
+/* ### #{$_module-name} START */
+
+main {
+  // ...
+}
+
+
+/* ### #{$_module-name} END
+/* ------------------------------------------------------------ */

@@ -1,0 +1,78 @@
+//*** Components: Form base styles ***//
+/** 
+ * Description of the module's purpose
+ */
+
+ @use '../abstracts/variables/__index__' as var;
+ @use '../abstracts/functions/__index__' as fn;
+ @use '../abstracts/mixins/__index__' as mx;
+ 
+ @use 'sass:color';
+ @use 'sass:list';
+ @use 'sass:map';
+ @use 'sass:math';
+ @use 'sass:meta';
+ @use 'sass:selector';
+ @use 'sass:string';
+
+
+ .form {
+  // ...
+
+
+  // Intended markup
+  // <details class="form__group">
+  //   <summary></summary>
+  // </details>
+
+
+  &__group {
+    border: 2px solid var(--background-accent);
+
+    & > summary {
+      padding: var(--gap-100);
+      font-family: var(--secondary-ff);
+      font-size: var(--text-200);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--text-body);
+      background-color: var(--background-accent);
+    }
+
+    &[open] {
+      padding-block-end: var(--gap-100);
+    }
+
+    & + & {
+      margin-block-start: var(--gap-100);
+    }
+
+    // &[open] > summary {
+    //   margin-block-end: var(--gap-100);
+    // }
+  }
+
+  &__group-row {
+    position: relative;
+    padding: var(--gap-100);
+    display: grid;
+    grid-template-columns: 12rem auto;
+    align-content: start;
+    align-items: start;
+    grid-auto-rows: min-content;
+    gap: var(--gap-200);
+
+    & + & {
+      padding-block-start: var(--gap-200);
+    }
+  }
+
+  &__label {
+    margin: 0;
+    font-family: var(--secondary-ff);
+    font-size: var(--text-200);
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text-body);
+  }
+ }

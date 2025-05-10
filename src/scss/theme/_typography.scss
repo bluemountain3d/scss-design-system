@@ -1,0 +1,439 @@
+//*** Theme Typography ***//
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:math';
+@use 'sass:map';
+
+
+// Typography global custom properties
+:root {
+  @include mx.fluid-font-size(
+    $prefix: 'fs', 
+    $vwx: true, 
+    $method: 'clamp'
+  );
+
+  @include mx.fluid-font-size(
+    $prefix: 'text', 
+    $minScale: 1.125,
+    $maxScale: 1.125,
+    $vwx: true, 
+    $method: 'clamp',
+    $include-sizes: (100, 200, 300, 400, 500)
+  );
+
+  // Line Hight/Leading
+  $value: 100;
+  @while $value <= 200 {
+    $decimal: math.div($value, 100);
+    
+    // For unitless properties (keep these as reference values)
+    --lh-#{$value}: #{$decimal};
+    
+    // For em-based properties with rounding
+    --lh-em-#{$value}: round(#{$decimal}em, 1px);
+    
+    $value: $value + 5;
+  }
+
+  // Font Families
+  --primary-ff: #{var.$primary-font-family}, serif;
+  --secondary-ff: #{var.$secondary-font-family}, sans-serif;
+  --tertiary-ff: #{var.$tertiary-font-family}, serif;
+  --quote-ff: #{var.$quote-font-family}, serif;
+  --mono-ff: #{var.$mono-font-family}, monospace;
+
+  --heading-ff: var(--primary-ff);
+  --subheading-ff: var(--secondary-ff);
+  --body-text-ff: var(--tertiary-ff);
+  --detail-ff: var(--secondary-ff);
+
+  // Font Descender
+  // $primary-des: map.get(map.get(var.$font-data, 'primary'), 'descender');
+  // $secondary-des: map.get(map.get(var.$font-data, 'secondary'), 'descender');
+  // $tertiary-des: map.get(map.get(var.$font-data, 'tertiary'), 'descender');
+  // $quote-des: map.get(map.get(var.$font-data, 'quote'), 'descender');
+  // $mono-des: map.get(map.get(var.$font-data, 'mono'), 'descender');
+
+  // Font Familes Bold Weight
+  --primary-bold: 700;
+  --secondary-bold: 700;
+  --tertiary-bold: 700;
+  --quote-bold: 700;
+  --mono-bold: 700;
+
+  --heading-bold: var(--primary-bold);
+  --subheading-bold: var(--secondary-bold);
+  --body-text-bold: var(--tertiary-bold);
+  --detail-bold: var(--secondary-bold);
+}
+
+//* Font Properties
+%text-properties {
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  font-weight: var(--font-weight);
+  font-style: var(--font-style);
+  letter-spacing: var(--letter-spacing);
+  text-transform: var(--text-transform);
+  text-rendering: geometricPrecision;
+}
+
+//*** Line-height to leading system START
+// Mixin for cap-to-baseline trimming
+@mixin trim-cap-to-baseline($font: 'primary', $text-height: 'cap', $block: true) {
+  @if $block {
+    display: block; // Ensures trimming works
+  }
+  @if not index(('cap', 'd'), $text-height) {
+    @error "Invalid $text-height '#{$text-height}'. Must be 'cap' or 'd'.";
+  }
+  $font-data: map.get(var.$font-data, $font);
+  // Set font-specific metrics as custom properties
+  $textHeight: map.get($font-data, $text-height);
+  $ascender: map.get($font-data, 'ascender');
+  $descender: map.get($font-data, 'descender');
+  $emBoxExceed: math.div($ascender + $descender - 1, 2);
+  $ascenderDiff: $ascender - $emBoxExceed - $textHeight;
+  $descenderDiff: $descender - $emBoxExceed;
+  $leftSideBearing: map.get($font-data, 'lsb');
+
+  // Left Side Bearing compensation
+  @if $leftSideBearing != null and $leftSideBearing != 0 {
+    margin-inline-start: -#{$leftSideBearing + 'em'};
+  } @else {
+    margin-inline-start: 0;
+  }
+
+  // Common ::before and ::after elements properties
+  &::before, &::after {
+    content: "";
+    display: table;
+  }
+  // Trim before and after
+  &::before {
+    margin-bottom: calc(((1 - var(--line-height)) * 0.5 - #{$ascenderDiff}) * 1em);
+    @supports (margin-bottom: 1lh) {
+      margin-bottom: calc(((1lh - 1em) * -0.5) - #{$ascenderDiff}em);
+    }
+  }
+  &::after {
+    margin-bottom: calc(((1 - var(--line-height)) * 0.5 - #{$descenderDiff}) * 1em);
+    @supports (margin-bottom: 1lh) {
+      margin-bottom: calc(((1lh - 1em) * -0.5) - #{$descenderDiff}em);
+    }
+  }
+
+  // Modern approach for supporting browsers
+  @supports (text-box-trim: trim-both) and (text-box-edge: cap alphabetic) {
+    text-box-trim: trim-both;
+    @if $text-height == 'cap' {
+      text-box-edge: cap alphabetic; // Top: cap height, Bottom: baseline
+    } @else if $text-height == 'd' {
+      text-box-edge: cap alphabetic; // Top: cap height, Bottom: baseline
+    }
+    &::before, &::after {
+      display: none; // Remove pseudo-elements when modern properties are supported
+    }
+  }
+}
+
+// Font metric classes with trimming
+%primary-text {
+  font-family: var(--primary-ff);
+  @include trim-cap-to-baseline('primary');
+}
+
+%secondary-text {
+  font-family: var(--secondary-ff);
+  @include trim-cap-to-baseline('secondary');
+}
+
+%tertiary-text {
+  font-family: var(--tertiary-ff);
+  @include trim-cap-to-baseline('tertiary');
+}
+
+%quote-text {
+  font-family: var(--quote-ff);
+  @include trim-cap-to-baseline('quote');
+}
+
+%mono-text {
+  font-family: var(--mono-ff);
+  @include trim-cap-to-baseline('mono');
+}
+//*** Line-height to leading system END
+
+// Font Sizes Utility classes
+.fs-100 {font-size: var(--fs-100) !important;}
+.fs-200 {font-size: var(--fs-200) !important;}
+.fs-300 {font-size: var(--fs-300) !important;}
+.fs-400 {font-size: var(--fs-400) !important;}
+.fs-500 {font-size: var(--fs-500) !important;}
+.fs-600 {font-size: var(--fs-600) !important;}
+.fs-700 {font-size: var(--fs-700) !important;}
+.fs-800 {font-size: var(--fs-800) !important;}
+.fs-900 {font-size: var(--fs-900) !important;}
+
+// Margins
+[class^="heading-"] + *, [class^="display-"] + * {
+  margin-block-start: 1.5rem;
+}
+
+[class^="heading-"] + [class^="heading-"] {
+  margin-block-start: round(1.5em, 1px);
+}
+
+p[class^="heading-"] + p[class^="heading-"] {
+  margin-block-start: 1.5rem;
+}
+
+[class^="heading-"] + [class^="text-"] {
+  margin-block-start: round(#{var.$primary-desc * 1.5}em, 1px);
+}
+
+// Semantic Font Sizes
+.display {
+  &-1, &-2 {
+    color: var(--text-accent);
+  }
+  &-1 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-900),
+      $line-height: 1.1,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-2 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-800),
+      $line-height: 1.1,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+}
+
+.heading {
+  &-1, &-2, &-3, &-4 {
+    color: var(--text-heading);
+  }
+  &-1 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-700),
+      $line-height: 1.1,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-2 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-600),
+      $line-height: 1.15,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-3 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-500),
+      $line-height: 1.2,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-4 {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: var(--fs-400),
+      $line-height: 1.25,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+
+  &--bold {
+    --font-weight: var(--primary-bold);
+  }
+}
+
+.text {
+  &-large, &-medium, &-normal, &-default, &-small, &-tiny {
+    color: var(--text-body);
+  }
+  &-large {
+    @include mx.f-setup (
+      $font: 'tertiary',
+      $font-size: var(--text-500),
+      $line-height: 1.4,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-medium {
+    @include mx.f-setup (
+      $font: 'tertiary',
+      $font-size: var(--text-400),
+      $line-height: 1.45,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-normal, &-default {
+    @include mx.f-setup (
+      $font: 'tertiary',
+      $font-size: var(--text-300),
+      $line-height: 1.5,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-small {
+    @include mx.f-setup (
+      $font: 'tertiary',
+      $font-size: var(--text-200),
+      $line-height: 1.55,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+  &-tiny {
+    @include mx.f-setup (
+      $font: 'tertiary',
+      $font-size: var(--text-100),
+      $line-height: 1.6,
+      $font-weight: 400,
+      $font-style: normal,
+      $letter-spacing: normal,
+      $text-transform: none,
+    );
+  }
+
+  &-bold {
+    --font-weight: var(--terriary-bold);
+  }
+}
+
+.title-box { // <hgroup>
+  display: block;
+  width: 100%;
+  margin-inline: 0 auto;
+
+  &--right > * {
+    margin-inline: auto 0;
+  }
+
+  &--center > * {
+    margin-inline: auto;
+  }
+
+  &--large {
+    font-size: var(--fs-700);
+  }
+  &--medium {
+    font-size: var(--fs-600);
+  }
+  &--small {
+    font-size: var(--fs-500);
+  }
+
+  &__title {
+    @include mx.f-setup (
+      $font: 'primary',
+      $font-size: 1em,
+      $line-height: 1.1
+    );
+    color: var(--text-heading);
+
+    &.text-bold, & .text-bold {
+      --font-weight: var(--primary-bold);
+    }
+  }
+
+  &__subtitle {
+    @include mx.f-setup (
+      $font: 'secondary',
+      $font-size: round(1em / var(--phi), 1px),
+      $line-height: 1.2
+    );
+    color: var(--text-subtitle);
+    margin-block-start: round(0.75em, 1px);
+
+    &.text-bold, & .text-bold {
+      --font-weight: var(--secondary-bold);
+    }
+  }
+
+  & + p, & + .text-box {
+    margin-block-start: round(1.5em, 1px);
+  }
+
+  @supports selector(:has(*)) {
+    & + p, & + .text-box {
+      margin-block-start: unset;
+    }
+    &:has( + p), &:has( + .text-box) {
+      margin-block-end: max(1.5rem, round(0.75em, 1px));
+    }
+  }
+
+  
+}
+
+.text-box {
+  width: min(100%, round(up, 72ch, 1px));
+
+  & + & {
+    margin-block-start: var(--gap-400);
+  }
+
+  p {
+    margin-block-end: unset;
+  }
+
+  p + p {
+    margin-block-start: round(min(1.5em, 1.5 * var(--text-500)), 1px);
+  }
+}
+
+.lead-in {
+  @include mx.f-setup (
+    $font: 'tertiary',
+    $font-size: var(--text-400),
+    $line-height: 1.45,
+    $font-weight: var(--tertiary-bold),
+    $font-style: normal,
+    $letter-spacing: normal,
+    $text-transform: none,
+  );
+}

@@ -1,0 +1,167 @@
+//*** Components: Button ***//
+/** 
+ * Description of the module's purpose
+ */
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+
+// Button reset
+button,
+input[type=”button”],
+input[type=”submit”],
+input[type=”reset”] {
+  all: unset;
+  & > * {
+    pointer-events: none;  
+  }
+}
+
+// Button Solid 
+.btn { 
+  padding: 1.357142em 2.071428em;
+  font-family: var(--secondary-ff);
+  font-size: var(--text-200);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-box-trim: both;
+  text-box-edge: cap;
+  background-color: var(--_color-background);
+  color: var(--_color-text);
+  transition: background-color 0.2s;
+
+  &:hover, &:focus {
+    background-color: var(--_color-hover);
+  }
+
+  &:active {
+    background-color: var(--_color-active);
+  }
+
+  &:disabled {
+    background-color: #C9CFD8;
+    color: #FFF;
+    cursor: not-allowed;
+  }
+}
+
+// Button Open
+.btn-open {
+  @extend .btn;
+  border-width: 1px;
+  border-style: solid;
+  background-color: transparent;
+  color: var(--_color-background);
+  border-color: var(--_color-background);
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover, &:focus {
+    color: var(--_color-hover);
+    border-color: var(--_color-hover);
+  }
+
+  &:active {
+    color: var(--_color-active);
+    border-color: var(--_color-active);
+  }
+
+  // Fill on hover
+  &.fill-on-hover {
+    &:hover, &:focus {
+      background-color: var(--_color-hover);
+      color: var(--_color-text);
+    }
+    
+    &:active {
+      background-color: var(--_color-active);
+      color: var(--_color-text);
+    }
+  }
+
+  &:disabled, &:disabled.fill-on-hover {
+    background-color: transparent;
+    border-color: #C9CFD8;
+    color: #FFF;
+    cursor: not-allowed;
+  }
+}
+
+// Border radius variants
+.btn--radius-left { 
+  border-radius: var(--gap-100) 0 0 var(--gap-100);
+}
+
+.btn--radius-right { 
+  border-radius: 0 var(--gap-100) var(--gap-100) 0;
+}
+
+.btn--radius-all { 
+  border-radius: var(--gap-100);
+}
+
+.btn--radius-full { 
+  border-radius: 2em;
+}
+
+// Color variants
+.btn--primary {
+  --_color-text: var(--button-text);
+  --_color-background: var(--button-primary-bg);
+  --_color-hover: #var(--button-primary-hover);
+  --_color-active: #var(--button-primary-active);
+}
+
+.btn--secondary {
+  --_color-text: var(--button-text);
+  --_color-background: var(--button-secondary-bg);
+  --_color-hover: #var(--button-secondary-hover);
+  --_color-active: #var(--button-secondary-active);
+}
+
+.btn--overlay {
+  --_color-text: var(--button-overlay-text);
+  --_color-background: var(--button-overlay-bg);
+  --_color-hover: #var(--button-overlay-hover);
+  --_color-active: #var(--button-overlay-active);
+}
+
+// Status variants
+.btn--success {
+  --_color-text: var(--button-text);
+  --_color-background: var(--status-success-bg);
+  --_color-hover: #var(--status-success-hover);
+  --_color-active: #var(--status-success-active);
+}
+
+.btn--warning {
+  --_color-text: var(--button-text);
+  --_color-background: var(--status-warning-bg);
+  --_color-hover: #var(--status-warning-hover);
+  --_color-active: #var(--status-warning-active);
+}
+
+.btn--error {
+  --_color-text: var(--button-text);
+  --_color-background: var(--status-error-bg);
+  --_color-hover: #var(--status-error-hover);
+  --_color-active: #var(--status-error-active);
+}
+
+.btn--info {
+  --_color-text: var(--button-text);
+  --_color-background: var(--status-info-bg);
+  --_color-hover: #var(--status-info-hover);
+  --_color-active: #var(--status-info-active);
+}

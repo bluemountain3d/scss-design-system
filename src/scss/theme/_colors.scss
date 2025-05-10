@@ -1,0 +1,203 @@
+//*** Theme Colors ***//
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:color';
+
+// Maps for text styles with their respective semantic color variables
+$text-style-colors: (
+  'display': (
+    'default': 'text-heading',
+    'muted': 'text-subtitle',
+    'accent': 'link-color'
+  ),
+  'heading': (
+    'default': 'text-heading',
+    'muted': 'text-subtitle',
+    'accent': 'link-color'
+  ),
+  'text': (
+    'default': 'text-body',
+    'muted': 'text-body-muted',
+    'accent': 'link-color'
+  )
+);
+
+$theme-light: (
+  'primary': #1E345A, // Headings
+  'secondary': #40587A, // Body copy | Secondary button
+  'secondary-tint': #4D6C99, // Hover | Focus
+  'secondary-shade': #32435C, // Active
+  'accent': #907326, // Subtitle | Primary Button | Inline text link
+  'accent-tint': #A68A3A, // Hover | Focus
+  'accent-shade': #7A5C22, // Active
+  'background': #F9FBFF,
+  'background-accent': #EEF3FA,
+  'button-text': #FFF,
+  'neutral': #8293AA, // Lines | Dividers
+  'disabled': #D1D5DB,
+  'disabled-text': #9CA3AF,
+  'overlay': #FFF, // Buttons on images
+  'overlay-text': #363636,
+  'overlay-hover': #F5F5F5,
+  'overlay-active': #E8E8E8,
+  
+  // Status colors for light theme
+  'success': #357A55, // Button background | Input text
+  'success-tint': #BAFFDA, // Input background
+  'success-shade': #013619, // Input border
+  'warning': #B7742F, 
+  'warning-tint': #FFDDB4,
+  'warning-shade': #653D13,
+  'error': #B2372A,
+  'error-tint': #FFD6D3,
+  'error-shade': #701F17,
+  'info': #2E72B0,
+  'info-tint': #D0E5FF,
+  'info-shade': #194676,
+);
+
+$theme-dark: (
+  'primary': #E6E6EF, // Headings
+  'secondary': #C0C5D6, // Body copy | Secondary button
+  'secondary-tint': #DEE4F7, // Hover | Focus
+  'secondary-shade': #A3A8B8, // Active
+  'accent': #B88E30, // Subtitle | Primary Button | Inline text link
+  'accent-tint': #D6A63A, // Hover | Focus
+  'accent-shade': #99772B, // Active
+  'background': #0C2340,
+  'background-accent': #15325A,
+  'button-text': #0C2340,
+  'neutral': #5B6F8A, // Lines | Dividers
+  'disabled': #2E4057,
+  'disabled-text': #6B7280,
+  'overlay': #FFF, // Buttons on images
+  'overlay-text': #363636,
+  'overlay-hover': #F5F5F5,
+  'overlay-active': #E8E8E8,
+  
+  // Status colors for dark theme
+  'success': #42A872, // Button background | Input text (brightened)
+  'success-tint': #BAFFDA, // Input background (same)
+  'success-shade': #0A4A2A, // Input border (brightened)
+  'warning': #E69138,
+  'warning-tint': #FFDDB4,
+  'warning-shade': #8F5A23,
+  'error': #E25141,
+  'error-tint': #FFD6D3,
+  'error-shade': #9E2A1E,
+  'info': #4A8FD1,
+  'info-tint': #D0E5FF,
+  'info-shade': #2D5A8C
+);
+
+
+// Mixin to create CSS custom properties from theme map
+@mixin create-theme-variables($theme-map, $prefix: '') {
+  @each $key, $value in $theme-map {
+    --color-#{$prefix}-#{$key}: #{$value};
+    --color-#{$prefix}-#{$key}-rgb: #{fn.hexToRgb($value)};
+  }
+}
+
+// Mixin to create text color variations
+@mixin create-text-color-variations() {
+  @each $style, $colors in $text-style-colors {
+    // For each text style (display, heading, text)
+    @each $variant, $color-var in $colors {
+      // For each variant (default, muted, accent)
+      .#{$style}--#{$variant} {
+        color: var(--#{$color-var});
+      }
+    }
+    
+    // Create status color variations for each text style
+    @each $status in (success, warning, error, info) {
+      .#{$style}--#{$status} {
+        color: var(--status-#{$status}-bg);
+      }
+    }
+  }
+}
+
+// Apply default light theme to root
+.theme-light,
+:root {
+  @include create-theme-variables($theme-light);
+  
+  // Common semantic variables that reference the theme colors
+  --background-color: var(--color-background);
+  --background-accent: var(--color-background-accent);
+  --text-heading: var(--color-primary);
+  --text-accent: var(--color-accent);
+  --text-body: var(--color-secondary);
+  --text-body-muted: var(--color-neutral);
+  --text-subtitle: var(--color-accent);
+  --link-color: var(--color-accent);
+  --link-hover: var(--color-accent-tint);
+  --border-color: var(--color-neutral);
+  --button-text: var(--color-button-text);
+  
+  --button-primary-bg: var(--color-accent);
+  --button-primary-hover: var(--color-accent-tint);
+  --button-primary-active: var(--color-accent-shade);
+
+  --button-secondary-bg: var(--color-secondary);
+  --button-secondary-hover: var(--color-secondary-tint);
+  --button-secondary-active: var(--color-secondary-shade);
+
+  // Button overlay variables
+  --button-overlay-text: var(--color-overlay-text);
+  --button-overlay-bg: var(--color-overlay);
+  --button-overlay-hover: var(--color-overlay-hover);
+  --button-overlay-active: var(--color-overlay-active);
+  
+  // Status semantic variables
+  --status-success-bg: var(--color-success-tint);
+  --status-success-text: var(--color-success);
+  --status-success-border: var(--color-success-shade);
+  
+  --status-warning-bg: var(--color-warning-tint);
+  --status-warning-text: var(--color-warning);
+  --status-warning-border: var(--color-warning-shade);
+  
+  --status-error-bg: var(--color-error-tint);
+  --status-error-text: var(--color-error);
+  --status-error-border: var(--color-error-shade);
+  
+  --status-info-bg: var(--color-info-tint);
+  --status-info-text: var(--color-info);
+  --status-info-border: var(--color-info-shade);
+}
+
+// Apply dark theme when dark class is added
+.theme-dark,
+:root.dark-mode {
+  @include create-theme-variables($theme-dark);
+}
+
+// Apply dark theme when preferred color scheme is dark (unless light mode is forced)
+@media (prefers-color-scheme: dark) {
+  :root:not(.light-mode) {
+    @include create-theme-variables($theme-dark);
+  }
+}
+
+// Generate text color variations
+@include create-text-color-variations();
+
+// Generate contextual color modifiers for use with any text element
+.text-color {
+  &-heading { color: var(--text-heading); }
+  &-body { color: var(--text-body); }
+  &-muted { color: var(--text-body-muted); }
+  &-accent { color: var(--link-color); }
+  
+  // Status colors
+  &-success { color: var(--status-success-bg); }
+  &-warning { color: var(--status-warning-bg); }
+  &-error { color: var(--status-error-bg); }
+  &-info { color: var(--status-info-bg); }
+}

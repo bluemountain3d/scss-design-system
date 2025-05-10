@@ -1,0 +1,169 @@
+//*** Components: Checkbox & Radio ***//
+/** 
+ * Description of the module's purpose
+ */
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:color';
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:selector';
+@use 'sass:string';
+
+
+// Imndended markup
+//  <form>
+//   <label class="form__check-test">
+//     <input type="checkbox" />
+//     Lorem ipsum
+//   </label>
+//  </form>
+
+.form__check {
+  // Custom properties
+  --_font-family: var(--secondary-ff);
+  --_font-size: var(--text-200);
+  --_color: var(--text-body);
+  --_border-color: var(--color-secondary);
+  --_background-color: var(--background-accent);
+  --_checkmark-color: var(--button-text);
+  --_hover-color: var(--color-accent);
+  --_anim-speed: 0.2s;
+  --_border-radius: 0;
+  --_input-size: round(1.5em, 1px);
+  --_border-width: max(2px, round(0.142857em, 1px));
+  --_outline-width: max(3px, round(0.2142856em, 1px));
+  --_checkmark-size: round(0.875em, 1px);
+  --_radio-border-checked: round(0.65em, 1px);
+
+  // Base styles
+  cursor: pointer;
+  font-family: var(--_font-family);
+  font-size: var(--_font-size);
+  line-height: 1.5;
+  color: var(--_color);
+  width: fit-content;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1em;
+
+  // Input base styles
+  & > input {
+    cursor: pointer;
+    font: inherit;
+    appearance: none;
+    position: relative;
+    width: var(--_input-size);
+    height: var(--_input-size);
+    border: var(--_border-width) solid var(--_border-color);
+    background-color: var(--_background-color);
+    transition: border-color 0.15s ease, outline 0.15s ease;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover {
+      border-color: var(--_hover-color);
+      outline: var(--_outline-width) solid var(--_hover-color);
+      outline-offset: -1px;
+    }
+  }
+
+  // Disabled state
+  &:has(input:disabled) {
+    color: var(--color-disabled-text);
+  }
+
+  // Checkbox specific styles
+  & > input[type="checkbox"] {
+    border-radius: var(--_border-radius);
+
+    &::before {
+      z-index: 1;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      translate: -50% -50%;
+      width: var(--_checkmark-size);
+      height: var(--_checkmark-size);
+      opacity: 0;
+      background-color: var(--_checkmark-color);
+      clip-path: url('#cbx-check-clip');
+    }
+
+    &:checked {
+      background-color: var(--_border-color);
+      border: 0;
+
+      &:hover {
+        background-color: var(--_hover-color);
+      }
+
+      &::before {
+        transition: background-color 0.15s ease;
+        background-color: var(--_checkmark-color);
+        opacity: 1;
+        animation: checkAnim var(--_anim-speed) ease;
+      }
+    }
+  }
+
+  // Radio specific styles
+  & > input[type="radio"] {
+    border-radius: 1em;
+
+    &:checked {
+      background-color: var(--_checkmark-color);
+      animation: radioAnim var(--_anim-speed) ease forwards;
+      border-width: var(--_radio-border-checked);
+
+      &:hover {
+        transition: background-color var(--_anim-speed) ease;
+        border-color: var(--_hover-color);
+      }
+    }
+  }
+
+  // Disabled states for both types
+  & input:disabled, 
+  & input:checked:disabled {
+    cursor: not-allowed;
+    border-color: var(--color-disabled);
+  }
+
+  & input[type="checkbox"]:checked:disabled {
+    background-color: var(--color-disabled);
+
+    &::before {
+      border-color: var(--color-disabled-text);
+    }
+  }
+
+  & input[type="radio"]:checked:disabled {
+    background-color: var(--color-disabled-text);
+  }
+}
+
+
+@keyframes checkAnim {
+  from {
+    scale: 0;
+  }
+}
+
+@keyframes radioAnim {
+  from {
+    border-width: round(0.65em, 1px);
+  }
+  to {
+    border-width: round(0.375em, 1px);
+  }
+}

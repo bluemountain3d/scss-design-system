@@ -1,0 +1,43 @@
+//*** Utilities Spacing ***//
+/** 
+ * Description of the module's purpose
+ */
+
+@use '../abstracts/variables/__index__' as var;
+@use '../abstracts/functions/__index__' as fn;
+@use '../abstracts/mixins/__index__' as mx;
+
+@use 'sass:math';
+
+:root {
+  // Gap Sizes
+  @include mx.fluid-spacing(
+    $prefix: 'gap', 
+    $vwx: true, 
+  );
+
+  // Section Vertical spacing
+  @include mx.fluid-spacing(
+    $prefix: 'gap', 
+    $vwx: true, 
+    $custom-weights: ('section': 4),
+    $size-multiplier: 3
+  );
+}
+
+$_spacing-weights: ('025', '050', '075', '100', '150', '200', '250', '300', '350', '400', '450', '500', '550', '600');
+@include mx.fluid-spacing($type: 'util', $prefix: 'm', $property: 'margin', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'mx', $property: 'margin-inline', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'mxs', $property: 'margin-inline-start', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'mxe', $property: 'margin-inline-end', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'my', $property: 'margin-block', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'mys', $property: 'margin-block-start', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'mye', $property: 'margin-block-end', $include-weights: $_spacing-weights, $vwx: true);
+
+@include mx.fluid-spacing($type: 'util', $prefix: 'p', $property: 'padding', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'px', $property: 'padding-inline', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'pxs', $property: 'padding-inline-start', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'pxe', $property: 'padding-inline-end', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'py', $property: 'padding-block', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'pys', $property: 'padding-block-start', $include-weights: $_spacing-weights, $vwx: true);
+@include mx.fluid-spacing($type: 'util', $prefix: 'pye', $property: 'padding-block-end', $include-weights: $_spacing-weights, $vwx: true);

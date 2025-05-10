@@ -1,0 +1,95 @@
+//*** Components: Input group ***//
+/** 
+ * Description of the module's purpose
+ */
+
+ @use '../abstracts/variables/__index__' as var;
+ @use '../abstracts/functions/__index__' as fn;
+ @use '../abstracts/mixins/__index__' as mx;
+ 
+ @use 'sass:color';
+ @use 'sass:list';
+ @use 'sass:map';
+ @use 'sass:math';
+ @use 'sass:meta';
+ @use 'sass:selector';
+ @use 'sass:string';
+
+// Intended markup
+//  <fieldset class="form__input-group">
+//    <legend class="">Group label</legend>
+//    <!-- Use class="visually-hidden" to hide legend -->
+//    <!-- content -->
+//  </fieldset>
+
+
+.form__input-group,
+.form__input-row,
+.form__input-col {
+  position: relative;
+  width: 100%;
+
+  // &:has(+ *) {
+  //   margin-inline-end: 1em;
+  // }
+}
+
+fieldset.form__input-group,
+fieldset.form__input-row,
+fieldset.form__input-col {
+
+
+  &:has(+ *) {
+    margin-block-end: var(--gap-200);
+  }
+
+  &:has(> legend:not(.visually-hidden)) {
+    padding-block-start: calc(1em + var(--gap-150));
+    // padding-block-end: var(--gap-100);
+    padding-inline-start: var(--gap-100);
+  }
+  
+  border: unset;
+
+  & > legend {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    font-family: var(--secondary-ff);
+    font-size: var(--text-200);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-body);
+  }
+}
+
+.form__input-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: var(--gap-200);
+
+  &.col-2 {
+    @extend .form__input-row;
+    grid-template-columns: repeat(2, 10rem);
+  }
+
+  &.col-3 {
+    @extend .form__input-row;
+    grid-template-columns: repeat(3, 10rem);
+  }
+
+  &.col-4 {
+    @extend .form__input-row;
+    grid-template-columns: repeat(4, 10rem);
+  }
+}
+
+.form__input-col {
+  width: 100%;
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: var(--gap-200);
+}

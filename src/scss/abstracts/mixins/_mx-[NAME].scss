@@ -1,0 +1,10 @@
+//*** Abstracts Mixin: Name ***//
+
+@use '../variables/__index__' as var;
+@use '../functions/__index__' as fn;
+
+// Example
+@mixin mixin-name($myVar: "Default Value") {
+  // Some styling stuff...
+  @content;
+}

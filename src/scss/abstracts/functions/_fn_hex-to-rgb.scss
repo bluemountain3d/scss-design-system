@@ -1,0 +1,20 @@
+//*** Abstracts Function: Hex to RGB ***//
+
+@use '../variables/__index__' as var;
+@use 'sass:color';
+@use 'sass:meta';
+
+/**
+ */
+@function hexToRgb($hex) {
+  @if meta.function-exists("red", "color") {
+    // Older method
+    @return "#{red($hex)}, #{green($hex)}, #{blue($hex)}";
+  } @else {
+    // Newer method
+    $r: color.channel($hex, "red");
+    $g: color.channel($hex, "green");
+    $b: color.channel($hex, "blue");
+    @return "#{$r}, #{$g}, #{$b}";
+  }
+}
