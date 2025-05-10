@@ -1,4 +1,4 @@
-# SCSS Boilerplate Documentation
+# SCSS Design System Documentation
 
 This document explains the SASS 7-1 folder structure, organized for modularity, scalability, and maintainability. Each folder serves a specific purpose, helping to separate concerns and speed up development.
 
